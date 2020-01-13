@@ -23,7 +23,7 @@ const TicketController = () => {
       if(status==0 && user.identity==2) {
         ticket  = await Ticket.create({
           trunkId: trunkId,
-          status: status,
+          status: '进场',
           createdAt: Date.now(),
           note: '正常进场',
           userId: id,
@@ -33,7 +33,7 @@ const TicketController = () => {
       } else if(status==1 && user.identity==1) {
         ticket  = await Ticket.create({
           trunkId: trunkId,
-          status: status,
+          status: '过磅',
           createdAt: Date.now(),
           note: `过磅${amount}吨`,
           userId: id,
@@ -43,7 +43,7 @@ const TicketController = () => {
       } else if(status==2 && user.identity==2) {
          ticket  = await Ticket.create({
           trunkId: trunkId,
-          status: status,
+          status: '出场',
           createdAt: Date.now(),
           note: '正常出场',
           userId: id,

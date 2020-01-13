@@ -13,11 +13,19 @@ const QuotaController = () => {
   };
 
   const create = async (req, res) => {
+    const { city, createdAt, amount, deadlineAt, documentId, documentHash, transaction} = req.body;
 
-  };
+    const quota = await Quota.create({
+      city: city,
+      createdAt: createdAt,
+      amount: amount,
+      deadlineAt: deadlineAt,
+      documentId: documentId,
+      documentHash: documentHash,
+      transaction: transaction,
+    });
 
-  const getById = async (req,res) => {
-
+    return res.status(200).json({ quota });
   };
 
   return {

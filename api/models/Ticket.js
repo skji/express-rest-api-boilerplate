@@ -33,6 +33,6 @@ const Ticket = sequelize.define('Ticket', {
   transaction: {
     type: Sequelize.STRING,
   },
-}, { hooks, tableName });
+}, { underscored:true, hooks, tableName });
 
 module.exports = Ticket;

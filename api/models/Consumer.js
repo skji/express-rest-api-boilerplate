@@ -28,7 +28,7 @@ const Consumer = sequelize.define('Consumer', {
     type: Sequelize.STRING,
   },
   status: {
-    type: Sequelize.ENUM('申请', '安排', '确认', '待进场', '进场中', '兑现完'),
+    type: Sequelize.ENUM('申请', '安排', '确认', '进场', '兑现'),
   },
   trunks: {
     type: Sequelize.ARRAY(Sequelize.STRING),
@@ -36,6 +36,6 @@ const Consumer = sequelize.define('Consumer', {
   transactions: {
     type: Sequelize.ARRAY(Sequelize.STRING),
   },
-}, { hooks, tableName });
+}, { underscored:true, hooks, tableName });
 
 module.exports = Consumer;

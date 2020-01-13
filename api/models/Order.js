@@ -25,7 +25,7 @@ const Order = sequelize.define('Order', {
     type: Sequelize.STRING,
   },
   status: {
-    type: Sequelize.ENUM('申请待审批', '审批待付款', '付款待确认', '确认'),
+    type: Sequelize.ENUM('申请', '审批', '付款', '确认'),
   },
   price: {
     type: Sequelize.FLOAT,
@@ -39,6 +39,6 @@ const Order = sequelize.define('Order', {
   transactions: {
     type: Sequelize.ARRAY(Sequelize.STRING),
   },
-}, { hooks, tableName });
+}, { underscored:true, hooks, tableName });
 
 module.exports = Order;
