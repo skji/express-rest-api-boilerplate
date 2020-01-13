@@ -16,8 +16,6 @@
     "dev": "cross-env NODE_ENV=development node ./api/api.js",
     "nodemon": "nodemon --exec npm run dev",
     "lint": "eslint ./api/. ./config/. ./test/.",
-    "prepush": "npm test",
-    "pretest": "npm run lint",
     "production": "cross-env NODE_ENV=production node ./api/api.js",
     "test-ci": "jest --coverage --forceExit"
   },
