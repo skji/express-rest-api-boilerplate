@@ -18,6 +18,9 @@ switch (process.env.NODE_ENV) {
           min: 0,
           idle: 10000,
         },
+        define: {
+          timestamps: false,
+        },
       },
     );
     break;
@@ -32,6 +35,9 @@ switch (process.env.NODE_ENV) {
           max: 5,
           min: 0,
           idle: 10000,
+        },
+        define: {
+          timestamps: false,
         },
       },
     );
@@ -48,7 +54,9 @@ switch (process.env.NODE_ENV) {
           min: 0,
           idle: 10000,
         },
-        storage: path.join(process.cwd(), 'db', 'database.sqlite'),
+        define: {
+          timestamps: false,
+        },
       },
     );
 }

@@ -1,33 +1,34 @@
 const Sequelize = require('sequelize');
-const bcryptService = require('../services/bcrypt.service');
-
 const sequelize = require('../../config/database');
 
 const hooks = {
-  beforeCreate(user) {
-    user.password = bcryptService().password(user); // eslint-disable-line no-param-reassign
-  },
 };
 
 const tableName = 'users';
 
 const User = sequelize.define('User', {
-  email: {
+  id: {
     type: Sequelize.STRING,
-    unique: true,
+    primaryKey: true,
   },
-  password: {
+  identity: {
+    type: Sequelize.ENUM('管理员', '砂厂人员', '公安人员', '购砂企业', '运砂车辆', '司机'),
+  },
+  telephone: {
     type: Sequelize.STRING,
   },
-}, { hooks, tableName });
-
-// eslint-disable-next-line
-User.prototype.toJSON = function () {
-  const values = Object.assign({}, this.get());
-
-  delete values.password;
-
-  return values;
-};
+  info: {
+    type: Sequelize.STRING,
+  },
+  name: {
+    type: Sequelize.STRING,
+  },
+  title: {
+    type: Sequelize.STRING,
+  },
+  serial: {
+    type: Sequelize.STRING,
+  },
+}, { underscored:true, hooks, tableName });
 
 module.exports = User;

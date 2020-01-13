@@ -11,6 +11,7 @@ const cors = require('cors');
 /**
  * server configuration
  */
+require('dotenv').config();
 const config = require('../config/');
 const dbService = require('./services/db.service');
 const auth = require('./policies/auth.policy');
@@ -24,7 +25,7 @@ const environment = process.env.NODE_ENV;
 const app = express();
 const server = http.Server(app);
 const mappedOpenRoutes = mapRoutes(config.publicRoutes, 'api/controllers/');
-const mappedAuthRoutes = mapRoutes(config.privateRoutes, 'api/controllers/');
+//const mappedAuthRoutes = mapRoutes(config.privateRoutes, 'api/controllers/');
 const DB = dbService(environment, config.migrate).start();
 
 // allow cross origin requests
@@ -43,11 +44,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // secure your private routes with jwt authentication middleware
-app.all('/private/*', (req, res, next) => auth(req, res, next));
+//app.all('/private/*', (req, res, next) => auth(req, res, next));
 
 // fill routes for express application
-app.use('/public', mappedOpenRoutes);
-app.use('/private', mappedAuthRoutes);
+app.use('/', mappedOpenRoutes);
+//app.use('/private', mappedAuthRoutes);
 
 server.listen(config.port, () => {
   if (environment !== 'production' &&
