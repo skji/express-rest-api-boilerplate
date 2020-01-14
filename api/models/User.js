@@ -14,7 +14,7 @@ const User = sequelize.define('User', {
   identity: {
     type: Sequelize.ENUM('管理员', '砂厂人员', '公安人员', '购砂企业', '运砂车辆', '司机'),
   },
-  telephone: {
+  location: {
     type: Sequelize.STRING,
   },
   info: {
