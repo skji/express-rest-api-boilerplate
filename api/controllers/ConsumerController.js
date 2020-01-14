@@ -34,7 +34,6 @@ const ConsumerController = () => {
 
     const today= new Date(new Date().setHours(0,0,0,0));
     const tomorrow= new Date(new Date().setHours(24,0,0,0));
-    //Ticket.belongsTo(Consumer);
     const consumers = await Consumer.findAll({
       where: {
         consumeAt: {
@@ -44,7 +43,6 @@ const ConsumerController = () => {
           [Op.contains]: [truckId],
         }
       },
-      //include: [Ticket],
     });
     return res.status(200).json({ consumers });
   };
@@ -52,13 +50,13 @@ const ConsumerController = () => {
   const create = async (req, res) => {
     const { id, amount, transaction, orderId } = req.params;
 
-    let tx = {};
-    tx['申请'] = transaction;
+    // let tx = {};
+    // tx['申请'] = transaction;
     const consumer = await Consumer.create({
       orderId: orderId,
       amount: amount,
       status: '申请',
-      transactions: tx,
+      //transactions: tx,
     });
 
     return res.status(200).json({ consumer });
