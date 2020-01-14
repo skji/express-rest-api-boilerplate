@@ -1,4 +1,6 @@
 const Consumer = require('../models/Consumer');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const ConsumerController = () => {
   const getAll = async (req, res) => {
@@ -25,6 +27,24 @@ const ConsumerController = () => {
     }
   };
 
+  const getByTruckId = async (req, res) => {
+    const { id } = req.query;
+    const { truckId } = req.params;
+
+    const today= new Date(new Date().setHours(0,0,0,0)) / 1000;
+    const consumers = await Consumer.findAll({
+      where: {
+        consumeAt: {
+          [Op.between]: [today, today+86400],
+        },
+        trucks: {
+          [Op.contain]: [truckId],
+        }
+      }
+    });
+    return res.status(200).json({ consumers });
+  };
+
   const create = async (req, res) => {
     const { id, amount, transaction, orderId } = req.params;
 
@@ -48,7 +68,7 @@ const ConsumerController = () => {
       consumer.transactions['安排'] = req.body.transaction;
     } else if(consumer && req.body.status==2) {
       consumer.status = '确认';
-      consumer.trunks = req.body.trunks;
+      consumer.trucks = req.body.trucks;
       consumer.transactions['确认'] = req.body.transaction;
     }
     await consumer.save();
@@ -60,6 +80,7 @@ const ConsumerController = () => {
     get,
     create,
     update,
+    getByTruckId,
   };
 };
 

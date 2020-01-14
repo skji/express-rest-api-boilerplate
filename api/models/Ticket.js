@@ -12,7 +12,7 @@ const Ticket = sequelize.define('Ticket', {
     primaryKey: true,
     autoIncrement: true,
   },
-  trunkId: {
+  truckId: {
     type: Sequelize.STRING,
   },
   createdAt: {

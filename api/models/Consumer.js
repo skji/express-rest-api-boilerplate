@@ -30,7 +30,7 @@ const Consumer = sequelize.define('Consumer', {
   status: {
     type: Sequelize.ENUM('申请', '安排', '确认', '进场', '兑现'),
   },
-  trunks: {
+  trucks: {
     type: Sequelize.ARRAY(Sequelize.STRING),
   },
   transactions: {

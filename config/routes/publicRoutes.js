@@ -7,9 +7,11 @@ const publicRoutes = {
   'PATCH /order': 'OrderController.update',
   'GET /consumers': 'ConsumerController.getAll',
   'GET /consumer/:consumerId': 'ConsumerController.get',
+  'GET /consumers/:truckId': 'ConsumerController.getByTruckId',
   'POST /consumer': 'ConsumerController.create',
   'PATCH /consumer/:consumerId': 'ConsumerController.update',
   'GET /tickets': 'TicketController.getAll',
+  'GET /tickets/:truckId': 'TicketController.getByTruckId',
   'POST /ticket': 'TicketController.create',
   'GET /user/:id': 'UserController.get',
 };
