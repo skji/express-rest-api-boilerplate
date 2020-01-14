@@ -52,6 +52,42 @@ const TicketController = () => {
     }
   };
 
+  const getByTruckId = async (req, res) => {
+    const { location } = req.params;
+    const today= new Date(new Date().setHours(0,0,0,0));
+    const tomorrow= new Date(new Date().setHours(24,0,0,0));
+    const consumers = await Consumer.findAll({
+      where: {
+        location: location,
+        consumeAt: {
+          [Op.between]: [today, tomorrow],
+        },
+      },
+      attributes: ['trucks'],
+    });
+    let trucks = [];
+    for(let consumer of consumers) {
+      trucks.push.apply(trucks, consumer.trucks);
+    }
+    try {
+      const tickets = await Ticket.findAll({
+        where: {
+          truckId: {
+            [Op.in]: trucks,
+          },
+          status: {
+            [Op.in]: ['进场', '过磅']
+          }
+        }
+      });
+
+      return res.status(200).json({ tickets });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: 'Internal server error' });
+    }
+  };
+
   const create = async (req, res) => {
     try {
       const { id, status, amount, consumerId, truckId, transaction} = req.body;
@@ -102,6 +138,7 @@ const TicketController = () => {
     getAll,
     create,
     getTrucks,
+    getByTruckId,
   };
 };
 

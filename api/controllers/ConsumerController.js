@@ -63,7 +63,7 @@ const ConsumerController = () => {
   };
 
   const update = async (req, res) => {
-    const { consumerId } = req.body;
+    const { consumerId } = req.params;
     let consumer = await Consumer.findByPk(consumerId);
     if(consumer && req.body.status==1) {
       consumer.status = '安排';
