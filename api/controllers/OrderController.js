@@ -44,19 +44,19 @@ const OrderController = () => {
   };
 
   const update = async (req, res) => {
-    const { orderId } = req.params;
+    const { orderId } = req.body;
     let order = await Order.findByPk(orderId);
     if(order && req.body.status==1) {
       order.status = '审批';
       order.note = req.body.note;
-      order.transactions['审批'] = req.body.transaction;
+      //order.transactions['审批'] = req.body.transaction;
     } else if(order && req.body.status==2) {
       order.status = '付款';
       order.receiptHash = req.body.receiptHash;
-      order.transactions['付款'] = req.body.transaction;
+      //order.transactions['付款'] = req.body.transaction;
     } else if(order && req.body.status==3) {
       order.status = '确认';
-      order.transactions['确认'] = req.body.transaction;
+      //order.transactions['确认'] = req.body.transaction;
     }
     await order.save();
     return res.status(200).json({ order });

@@ -63,17 +63,17 @@ const ConsumerController = () => {
   };
 
   const update = async (req, res) => {
-    const { consumerId } = req.params;
+    const { consumerId } = req.body;
     let consumer = await Consumer.findByPk(consumerId);
     if(consumer && req.body.status==1) {
       consumer.status = '安排';
       consumer.location = req.body.location;
       consumer.consumeAt = req.body.consumeAt;
-      consumer.transactions['安排'] = req.body.transaction;
+      //consumer.transactions['安排'] = req.body.transaction;
     } else if(consumer && req.body.status==2) {
       consumer.status = '确认';
       consumer.trucks = req.body.trucks;
-      consumer.transactions['确认'] = req.body.transaction;
+      //consumer.transactions['确认'] = req.body.transaction;
     }
     await consumer.save();
     return res.status(200).json({ consumer });
