@@ -31,14 +31,15 @@ const ConsumerController = () => {
     const { id } = req.query;
     const { truckId } = req.params;
 
-    const today= new Date(new Date().setHours(0,0,0,0)) / 1000;
+    const today= new Date(new Date().setHours(0,0,0,0));
+    const tomorrow= new Date(new Date().setHours(24,0,0,0));
     const consumers = await Consumer.findAll({
       where: {
         consumeAt: {
-          [Op.between]: [today, today+86400],
+          [Op.between]: [today, tomorrow],
         },
         trucks: {
-          [Op.contain]: [truckId],
+          [Op.contains]: [truckId],
         }
       }
     });
