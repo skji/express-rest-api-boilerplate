@@ -52,11 +52,12 @@ const ConsumerController = () => {
   const create = async (req, res) => {
     const { id, amount, transaction, orderId } = req.params;
 
+    let tx = {'申请':transaction};
     const consumer = await Consumer.create({
       orderId: orderId,
       amount: amount,
       status: '申请',
-      transactions: {'申请':transaction},
+      transactions: tx,
     });
 
     return res.status(200).json({ consumer });

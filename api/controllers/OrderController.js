@@ -28,6 +28,7 @@ const OrderController = () => {
   const create = async (req, res) => {
     const { id, city, deadlineAt, price, amount, transaction } = req.params;
 
+    let tx = {'申请':transaction};
     const order = await Order.create({
       city: city,
       deadlineAt: deadlineAt,
@@ -35,7 +36,7 @@ const OrderController = () => {
       amount: amount,
       userId: id,
       status: '申请',
-      transactions: {'申请':transaction},
+      transactions: tx,
     });
 
     return res.status(200).json({ order });
