@@ -34,7 +34,7 @@ const ConsumerController = () => {
 
     const today= new Date(new Date().setHours(0,0,0,0));
     const tomorrow= new Date(new Date().setHours(24,0,0,0));
-    Ticket.belongsTo(Consumer);
+    //Ticket.belongsTo(Consumer);
     const consumers = await Consumer.findAll({
       where: {
         consumeAt: {
@@ -44,7 +44,7 @@ const ConsumerController = () => {
           [Op.contains]: [truckId],
         }
       },
-      include: [Ticket],
+      //include: [Ticket],
     });
     return res.status(200).json({ consumers });
   };

@@ -40,7 +40,7 @@ const TicketController = () => {
             [Op.in]: trucks,
           },
           status: {
-            [Op.in]: ['进场', '过场']
+            [Op.in]: ['进场', '过磅']
           }
         }
       });
