@@ -48,7 +48,7 @@ const ConsumerController = () => {
   };
 
   const create = async (req, res) => {
-    const { id, amount, transaction, orderId } = req.params;
+    const { id, amount, transaction, orderId } = req.body;
 
     // let tx = {};
     // tx['申请'] = transaction;
