@@ -52,7 +52,8 @@ const ConsumerController = () => {
   const create = async (req, res) => {
     const { id, amount, transaction, orderId } = req.params;
 
-    let tx = {'申请':transaction};
+    let tx = {};
+    tx['申请'] = transaction;
     const consumer = await Consumer.create({
       orderId: orderId,
       amount: amount,

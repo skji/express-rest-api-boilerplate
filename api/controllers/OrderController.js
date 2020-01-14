@@ -28,7 +28,8 @@ const OrderController = () => {
   const create = async (req, res) => {
     const { id, city, deadlineAt, price, amount, transaction } = req.params;
 
-    let tx = {'申请':transaction};
+    let tx = {};
+    tx['申请'] = transaction;
     const order = await Order.create({
       city: city,
       deadlineAt: deadlineAt,
