@@ -1,5 +1,8 @@
 const User   = require('../models/User');
 const Ticket = require('../models/Ticket');
+const Consumer = require('../models/Consumer');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const TicketController = () => {
   const getAll = async (req, res) => {
@@ -13,12 +16,32 @@ const TicketController = () => {
     }
   };
 
-  const getByTruckId = async (req, res) => {
-    const { truckId } = req.params;
+  const getTrucks = async (req, res) => {
+    const { location } = req.params;
+    const today= new Date(new Date().setHours(0,0,0,0));
+    const tomorrow= new Date(new Date().setHours(24,0,0,0));
+    const consumers = await Consumer.findAll({
+      where: {
+        location: location,
+        consumeAt: {
+          [Op.between]: [today, tomorrow],
+        },
+      },
+      attributes: ['trucks'],
+    });
+    let trucks = [];
+    for(let consumer of consumers) {
+      trucks.push.apply(trucks, consumer.trucks);
+    }
     try {
       const tickets = await Ticket.findAll({
         where: {
-          truckId: truckId,
+          truckId: {
+            [Op.in]: trucks,
+          },
+          status: {
+            [Op.in]: ['进场', '过场']
+          }
         }
       });
 
@@ -78,7 +101,7 @@ const TicketController = () => {
   return {
     getAll,
     create,
-    getByTruckId,
+    getTrucks,
   };
 };
 
