@@ -1,3 +1,4 @@
+const Ticket = require('../models/Ticket');
 const Consumer = require('../models/Consumer');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -33,6 +34,7 @@ const ConsumerController = () => {
 
     const today= new Date(new Date().setHours(0,0,0,0));
     const tomorrow= new Date(new Date().setHours(24,0,0,0));
+    Ticket.belongsTo(Consumer);
     const consumers = await Consumer.findAll({
       where: {
         consumeAt: {
@@ -41,7 +43,8 @@ const ConsumerController = () => {
         trucks: {
           [Op.contains]: [truckId],
         }
-      }
+      },
+      include: [Ticket],
     });
     return res.status(200).json({ consumers });
   };
