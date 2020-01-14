@@ -34,7 +34,7 @@ const Order = sequelize.define('Order', {
     type: Sequelize.STRING
   },
   amount: {
-    type: Sequelize.INT
+    type: Sequelize.INTEGER
   },
   transactions: {
     type: Sequelize.ARRAY(Sequelize.STRING),
