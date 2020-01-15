@@ -45,7 +45,10 @@ const TicketController = () => {
           },
           status: {
             [Op.in]: ['进场', '过磅', '出场']
-          }
+          },
+          createdAt: {
+            [Op.between]: [today, tomorrow],
+          },
         },
         order: [[Sequelize.literal('created'), 'DESC']],
         raw: true
@@ -73,13 +76,18 @@ const TicketController = () => {
   const getByTruckId = async (req, res) => {
     const { truckId } = req.params;
     const { id } = req.query;
+    const today = new Date(new Date().setHours(0,0,0,0));
+    const tomorrow= new Date(new Date().setHours(24,0,0,0));
     try {
       const ticket = await Ticket.findOne({
         where: {
           truckId: truckId,
           status: {
             [Op.in]: ['待进场', '进场', '过磅', '出场']
-          }
+          },
+          createdAt: {
+            [Op.between]: [today, tomorrow],
+          },
         },
         order: [['createdAt', 'DESC']]
       });
