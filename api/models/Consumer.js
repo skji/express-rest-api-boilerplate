@@ -13,7 +13,7 @@ const Consumer = sequelize.define('Consumer', {
     autoIncrement: true,
   },
   orderId: {
-    type: Sequelize.STRING,
+    type: Sequelize.INTEGER,
   },
   consumed: {
     type: Sequelize.FLOAT,

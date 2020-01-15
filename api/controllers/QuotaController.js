@@ -49,11 +49,11 @@ const QuotaController = () => {
           raw: true
         });
 
-        quotas['dataValues']['left'] = {
-          '第一季度': total1.total,
-          '第二季度': total2.total,
-          '第三季度': total3.total,
-          '第四季度': total4.total,
+        quotas[i]['dataValues']['left'] = {
+          '第一季度': quotas[i].amount/4 - total1.total,
+          '第二季度': quotas[i].amount/4 - total2.total,
+          '第三季度': quotas[i].amount/4 - total3.total,
+          '第四季度': quotas[i].amount/4 - total4.total,
         };
       }
 

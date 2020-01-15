@@ -14,7 +14,7 @@ const OrderController = () => {
           attributes:[[Sequelize.fn('sum', Sequelize.col('amount')), 'total']],
           raw: true
         });
-        orders['dataValues']['left'] = total.total;
+        orders[i]['dataValues']['left'] = orders[i].amount - total.total;
       }
 
       return res.status(200).json({ orders });
