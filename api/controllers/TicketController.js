@@ -36,9 +36,9 @@ const TicketController = () => {
       trucks.push.apply(trucks, consumer.trucks);
     }
     try {
-      const tickets = await Ticket.findAll({
+      const ts = await Ticket.findAll({
         group: ['truckId'],
-        attributes: ['truckId', 'createdAt', 'status'],
+        attributes: ['truckId', [Sequelize.fn('max', 'createdAt'), 'created']],
         where: {
           truckId: {
             [Op.in]: trucks,
@@ -47,13 +47,21 @@ const TicketController = () => {
             [Op.in]: ['进场', '过磅']
           }
         },
-        order: [[Sequelize.fn('max', Sequelize.col('createdAt')), 'DESC']]
+        order: [[Sequelize.literal('created'), 'DESC']]
       });
-
-      for(let ticket of tickets) {
-        let name = await User.findByPk(ticket.truckId, {attributes:['name']});
-        ticket.name = name;
+      let tickets = [];
+      for(let t of ts) {
+        let ticket = await Ticket.findOne({
+          where: {
+            truckId: t.truckId,
+            createdAt: t.created,
+          }
+        });
+        let name = await User.findByPk(t.truckId, {attributes:['name']});
+        ticket.name = name.name;
+        tickets.push(ticket);
       }
+
       return res.status(200).json({ tickets });
     } catch (err) {
       console.log(err);
@@ -72,7 +80,7 @@ const TicketController = () => {
             [Op.in]: ['待进场', '进场', '过磅']
           }
         },
-        order: ['createdAt', 'DESC']
+        order: [['createdAt', 'DESC']]
       });
       const truck = await User.findByPk(truckId);
       if(ticket) {
