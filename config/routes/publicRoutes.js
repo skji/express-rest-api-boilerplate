@@ -13,6 +13,7 @@ const publicRoutes = {
   'GET /tickets': 'TicketController.getTrucks',
   'GET /ticket/:truckId': 'TicketController.getByTruckId',
   'POST /ticket': 'TicketController.create',
+  'GET /users': 'UserController.getAll',
   'GET /user/:id': 'UserController.get',
 };
 
