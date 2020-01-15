@@ -55,6 +55,7 @@ const ConsumerController = () => {
       amount: amount,
       status: '申请',
       transactions: [],
+      consumed: 0
     });
     consumer.transactions['申请'] = transaction;
     await consumer.save();
