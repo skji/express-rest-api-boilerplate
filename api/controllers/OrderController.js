@@ -55,8 +55,10 @@ const OrderController = () => {
       userId: id,
       status: '申请',
       quotaId: quota.id,
-      transactions: {'申请': transaction},
+      transactions: []
     });
+    order.transactions['申请'] = transaction;
+    await order.save();
 
     return res.status(200).json({ order });
   };
