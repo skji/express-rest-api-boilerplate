@@ -44,7 +44,7 @@ const TicketController = () => {
             [Op.in]: trucks,
           },
           status: {
-            [Op.in]: ['进场', '过磅', '出场']
+            [Op.in]: ['待进场', '进场', '过磅', '出场']
           },
           createdAt: {
             [Op.between]: [today, tomorrow],
