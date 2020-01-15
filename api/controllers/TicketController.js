@@ -17,8 +17,10 @@ const TicketController = () => {
   };
 
   const getTrucks = async (req, res) => {
-    const { location } = req.params;
-    const today= new Date(new Date().setHours(0,0,0,0));
+    const { id } = req.query;
+    const user = await User.findByPk(id);
+    const location = user.location;
+    const today = new Date(new Date().setHours(0,0,0,0));
     const tomorrow= new Date(new Date().setHours(24,0,0,0));
     const consumers = await Consumer.findAll({
       where: {
@@ -35,6 +37,8 @@ const TicketController = () => {
     }
     try {
       const tickets = await Ticket.findAll({
+        group: ['truckId'],
+        attributes: ['truckId', 'createdAt', 'status'],
         where: {
           truckId: {
             [Op.in]: trucks,
@@ -42,9 +46,14 @@ const TicketController = () => {
           status: {
             [Op.in]: ['进场', '过磅']
           }
-        }
+        },
+        order: [[Sequelize.fn('max', Sequelize.col('createdAt')), 'DESC']]
       });
 
+      for(let ticket of tickets) {
+        let name = await User.findByPk(ticket.truckId, {attributes:['name']});
+        ticket.name = name;
+      }
       return res.status(200).json({ tickets });
     } catch (err) {
       console.log(err);
@@ -54,18 +63,33 @@ const TicketController = () => {
 
   const getByTruckId = async (req, res) => {
     const { truckId } = req.params;
+    const { id } = req.query;
     try {
-      const tickets = await Ticket.findOne({
+      const ticket = await Ticket.findOne({
         where: {
           truckId: truckId,
           status: {
-            [Op.in]: ['进场', '过磅']
+            [Op.in]: ['待进场', '进场', '过磅']
           }
         },
         order: ['createdAt', 'DESC']
       });
-
-      return res.status(200).json({ tickets });
+      const truck = await User.findByPk(truckId);
+      if(ticket) {
+        const consumer = await Consumer.findByPk(ticket.consumerId);
+        return res.status(200).json({
+          name: truck.name,
+          info: truck.info,
+          consumeAt: consumer.consumeAt,
+          location: consumer.location,
+          amount: consumer.amount,
+          consumed: consumer.consumed,
+          status: ticket.status,
+          note: ticket.note,
+        });
+      } else {
+        return res.status(404).send('Not Found');
+      }
     } catch (err) {
       console.log(err);
       return res.status(500).json({ msg: 'Internal server error' });

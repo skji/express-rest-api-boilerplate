@@ -19,7 +19,7 @@ const Ticket = sequelize.define('Ticket', {
     type: Sequelize.DATE,
   },
   status: {
-    type: Sequelize.ENUM('进场', '过磅', '出场'),
+    type: Sequelize.ENUM('待进场', '进场', '过磅', '出场'),
   },
   note: {
     type: Sequelize.STRING,
