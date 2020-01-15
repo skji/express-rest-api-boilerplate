@@ -113,7 +113,7 @@ const TicketController = () => {
       const user = await User.findByPk(id);
 
       let ticket;
-      if(status==0 && user.identity=='公安人员') {
+      if(status==1 && user.identity=='公安人员') {
         ticket  = await Ticket.create({
           truckId: truckId,
           status: '进场',
@@ -123,7 +123,10 @@ const TicketController = () => {
           transaction: transaction,
           consumerId: consumerId,
         });
-      } else if(status==1 && user.identity=='砂厂人员') {
+        let consumer = await Consumer.findByPk(consumerId);
+        consumer.status = '进场';
+        await consumer.save();
+      } else if(status==2 && user.identity=='砂厂人员') {
         ticket  = await Ticket.create({
           truckId: truckId,
           status: '过磅',
@@ -133,7 +136,13 @@ const TicketController = () => {
           transaction: transaction,
           consumerId: consumerId,
         });
-      } else if(status==2 && user.identity=='公安人员') {
+        let consumer = await Consumer.findByPk(consumerId);
+        consumer.consumed += amount;
+        if(consumer.consumed==amount) {
+          consumer.status = '兑现';
+        }
+        await consumer.save();
+      } else if(status==3 && user.identity=='公安人员') {
          ticket  = await Ticket.create({
           truckId: truckId,
           status: '出场',
