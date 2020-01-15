@@ -58,7 +58,7 @@ const OrderController = () => {
       transactions: []
     });
     order.transactions['申请'] = transaction;
-    //console.log(order);
+    console.log(order);
     await order.save();
 
     return res.status(200).json({ order });
