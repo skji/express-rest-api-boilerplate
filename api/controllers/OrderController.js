@@ -11,7 +11,7 @@ const OrderController = () => {
           where: {
             orderId: orders[i].id,
           },
-          attributes:[Sequelize.fn('sum', Sequelize.col('amount')), 'total'],
+          attributes:[[Sequelize.fn('sum', Sequelize.col('amount')), 'total']],
           raw: true
         });
         orders['dataValues']['left'] = total.total;

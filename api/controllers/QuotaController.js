@@ -15,7 +15,7 @@ const QuotaController = () => {
               [Op.between]: ['2020-01-01','2020-04-01']
             }
           },
-          attributes:[Sequelize.fn('sum', Sequelize.col('amount')), 'total'],
+          attributes:[[Sequelize.fn('sum', Sequelize.col('amount')), 'total']],
           raw: true
         });
         const total2 = await Order.findOne({
@@ -25,7 +25,7 @@ const QuotaController = () => {
               [Op.between]: ['2020-04-01','2020-07-01']
             }
           },
-          attributes:[Sequelize.fn('sum', Sequelize.col('amount')), 'total'],
+          attributes:[[Sequelize.fn('sum', Sequelize.col('amount')), 'total']],
           raw: true
         });
         const total3 = await Order.findOne({
@@ -35,7 +35,7 @@ const QuotaController = () => {
               [Op.between]: ['2020-07-01','2020-10-01']
             }
           },
-          attributes:[Sequelize.fn('sum', Sequelize.col('amount')), 'total'],
+          attributes:[[Sequelize.fn('sum', Sequelize.col('amount')), 'total']],
           raw: true
         });
         const total4 = await Order.findOne({
@@ -45,7 +45,7 @@ const QuotaController = () => {
               [Op.between]: ['2020-10-01','2021-01-01']
             }
           },
-          attributes:[Sequelize.fn('sum', Sequelize.col('amount')), 'total'],
+          attributes:[[Sequelize.fn('sum', Sequelize.col('amount')), 'total']],
           raw: true
         });
 
