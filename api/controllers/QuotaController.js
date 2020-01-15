@@ -1,11 +1,60 @@
 const Quota = require('../models/Quota');
 const Order = require('../models/Order');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const QuotaController = () => {
   const getAll = async (req, res) => {
     try {
       let quotas = await Quota.findAll();
       for(let i=0; i<quotas.length; i++) {
+        const total1 = await Order.findOne({
+          where: {
+            quotaId: quotas[i].id,
+            deadlineAt: {
+              [Op.between]: ['2020-01-01','2020-04-01']
+            }
+          },
+          attributes:[Sequelize.fn('sum', Sequelize.col('amount')), 'total'],
+          raw: true
+        });
+        const total2 = await Order.findOne({
+          where: {
+            quotaId: quotas[i].id,
+            deadlineAt: {
+              [Op.between]: ['2020-04-01','2020-07-01']
+            }
+          },
+          attributes:[Sequelize.fn('sum', Sequelize.col('amount')), 'total'],
+          raw: true
+        });
+        const total3 = await Order.findOne({
+          where: {
+            quotaId: quotas[i].id,
+            deadlineAt: {
+              [Op.between]: ['2020-07-01','2020-10-01']
+            }
+          },
+          attributes:[Sequelize.fn('sum', Sequelize.col('amount')), 'total'],
+          raw: true
+        });
+        const total4 = await Order.findOne({
+          where: {
+            quotaId: quotas[i].id,
+            deadlineAt: {
+              [Op.between]: ['2020-10-01','2021-01-01']
+            }
+          },
+          attributes:[Sequelize.fn('sum', Sequelize.col('amount')), 'total'],
+          raw: true
+        });
+
+        quotas['dataValues']['left'] = {
+          '第一季度': total1.total,
+          '第二季度': total2.total,
+          '第三季度': total3.total,
+          '第四季度': total4.total,
+        };
       }
 
       return res.status(200).json({ quotas });

@@ -77,10 +77,11 @@ const ConsumerController = () => {
       for(let truck of consumer.trucks) {
         await Ticket.create({
           truckId: truck,
-          createdAt: consumer.consumerAt,
+          createdAt: consumer.consumeAt,
           status: '待进场',
           userId: req.body.id,
           consumerId: consumerId,
+          consumed: 0,
           transaction: req.body.transaction,
         });
       }

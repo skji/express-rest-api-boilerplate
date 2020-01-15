@@ -1,9 +1,21 @@
 const Order = require('../models/Order');
+const Consumer = require('../models/Consumer');
+const Sequelize = require('sequelize');
 
 const OrderController = () => {
   const getAll = async (req, res) => {
     try {
       const orders = await Order.findAll();
+      for(let i=0; i<orders.length; i++) {
+        const total = await Consumer.findOne({
+          where: {
+            orderId: orders[i].id,
+          },
+          attributes:[Sequelize.fn('sum', Sequelize.col('amount')), 'total'],
+          raw: true
+        });
+        orders['dataValues']['left'] = total.total;
+      }
 
       return res.status(200).json({ orders });
     } catch (err) {
