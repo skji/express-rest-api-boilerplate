@@ -166,7 +166,7 @@ const TicketController = () => {
         if(consumer.amount > consumer.consumed) {
           await Ticket.create({
             truckId: truckId,
-            createdAt: consumer.consumeAt,
+            createdAt: Date.now(),
             status: '待进场',
             userId: id,
             consumerId: consumerId,

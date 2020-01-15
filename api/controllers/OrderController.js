@@ -47,7 +47,7 @@ const OrderController = () => {
       order: [['amount', 'DESC']],
     });
 
-    const order = await Order.create({
+    let order = await Order.create({
       city: city,
       deadlineAt: deadlineAt,
       price: price,
@@ -58,8 +58,7 @@ const OrderController = () => {
       transactions: []
     });
     order.transactions['申请'] = transaction;
-    console.log(order);
-    await order.save();
+    order = await order.update({transactions: order.transactions});
 
     return res.status(200).json({ order });
   };
