@@ -47,7 +47,8 @@ const TicketController = () => {
             [Op.in]: ['进场', '过磅']
           }
         },
-        order: [[Sequelize.literal('created'), 'DESC']]
+        order: [[Sequelize.literal('created'), 'DESC']],
+        raw: true
       });
       let tickets = [];
       for(let t of ts) {
