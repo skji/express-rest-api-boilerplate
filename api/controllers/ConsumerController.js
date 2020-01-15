@@ -54,8 +54,10 @@ const ConsumerController = () => {
       orderId: orderId,
       amount: amount,
       status: '申请',
-      transactions: {'申请': transaction},
+      transactions: [],
     });
+    consumer.transactions['申请'] = transaction;
+    await consumer.save();
 
     return res.status(200).json({ consumer });
   };
