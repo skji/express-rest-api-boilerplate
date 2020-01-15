@@ -147,7 +147,7 @@ const TicketController = () => {
         });
         let consumer = await Consumer.findByPk(consumerId);
         consumer.consumed += amount;
-        if(consumer.consumed==amount) {
+        if(consumer.consumed==consumer.amount) {
           consumer.status = '兑现';
           //consumer.transactions['兑现'] = transaction;
         }
@@ -162,6 +162,17 @@ const TicketController = () => {
           transaction: transaction,
           consumerId: consumerId,
         });
+        let consumer = await Consumer.findByPk(consumerId);
+        if(consumer.amount > consumer.consumed) {
+          await Ticket.create({
+            truckId: truckId,
+            createdAt: consumer.consumeAt,
+            status: '待进场',
+            userId: id,
+            consumerId: consumerId,
+            transaction: transaction,
+          });
+        }
       };
 
       return res.status(200).json({ ticket });

@@ -82,7 +82,6 @@ const ConsumerController = () => {
           status: '待进场',
           userId: req.body.id,
           consumerId: consumerId,
-          consumed: 0,
           transaction: req.body.transaction,
         });
       }
