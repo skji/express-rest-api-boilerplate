@@ -47,8 +47,6 @@ const OrderController = () => {
       order: [['amount', 'DESC']],
     });
 
-    // let tx = {};
-    // tx['申请'] = transaction;
     const order = await Order.create({
       city: city,
       deadlineAt: deadlineAt,
@@ -57,7 +55,7 @@ const OrderController = () => {
       userId: id,
       status: '申请',
       quotaId: quota.id,
-      // transactions: tx,
+      transactions: {'申请': transaction},
     });
 
     return res.status(200).json({ order });
@@ -69,14 +67,14 @@ const OrderController = () => {
     if(order && req.body.status==1) {
       order.status = '审批';
       order.note = req.body.note;
-      //order.transactions['审批'] = req.body.transaction;
+      order.transactions['审批'] = req.body.transaction;
     } else if(order && req.body.status==2) {
       order.status = '付款';
       order.receiptHash = req.body.receiptHash;
-      //order.transactions['付款'] = req.body.transaction;
+      order.transactions['付款'] = req.body.transaction;
     } else if(order && req.body.status==3) {
       order.status = '确认';
-      //order.transactions['确认'] = req.body.transaction;
+      order.transactions['确认'] = req.body.transaction;
     }
     await order.save();
     return res.status(200).json({ order });
