@@ -1,4 +1,5 @@
 const Order = require('../models/Order');
+const Quota = require('../models/Quota');
 const Consumer = require('../models/Consumer');
 const Sequelize = require('sequelize');
 
@@ -39,6 +40,12 @@ const OrderController = () => {
 
   const create = async (req, res) => {
     const { id, city, deadlineAt, price, amount, transaction } = req.body;
+    const quota = await Quota.findOne({
+      where: {
+        city: city,
+      },
+      order: [['amount', 'DESC']],
+    });
 
     // let tx = {};
     // tx['申请'] = transaction;
@@ -49,6 +56,7 @@ const OrderController = () => {
       amount: amount,
       userId: id,
       status: '申请',
+      quotaId: quota.id,
       // transactions: tx,
     });
 
