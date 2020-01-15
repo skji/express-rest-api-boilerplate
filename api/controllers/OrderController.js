@@ -55,10 +55,10 @@ const OrderController = () => {
       userId: id,
       status: '申请',
       quotaId: quota.id,
-      transactions: []
+      //transactions: {申请:transaction}
     });
-    order.transactions['申请'] = transaction;
-    order = await order.update({transactions: order.transactions});
+    //order.transactions['申请'] = transaction;
+    //order = await order.update({transactions: order.transactions});
 
     return res.status(200).json({ order });
   };

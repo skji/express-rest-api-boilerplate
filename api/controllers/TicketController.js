@@ -146,8 +146,8 @@ const TicketController = () => {
           consumerId: consumerId,
         });
         let consumer = await Consumer.findByPk(consumerId);
-        consumer.consumed += amount;
-        if(consumer.consumed==consumer.amount) {
+        consumer.consumed = Number(consumer.consumed) + Number(amount);
+        if(consumer.consumed>=consumer.amount) {
           consumer.status = '兑现';
           //consumer.transactions['兑现'] = transaction;
         }
