@@ -1,9 +1,12 @@
 const Quota = require('../models/Quota');
+const Order = require('../models/Order');
 
 const QuotaController = () => {
   const getAll = async (req, res) => {
     try {
-      const quotas = await Quota.findAll();
+      let quotas = await Quota.findAll();
+      // for(let i=0; i<quotas.length; i++) {
+      // }
 
       return res.status(200).json({ quotas });
     } catch (err) {

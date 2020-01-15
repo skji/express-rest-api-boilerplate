@@ -92,6 +92,7 @@ const TicketController = () => {
           consumeAt: consumer.consumeAt,
           location: consumer.location,
           amount: consumer.amount,
+          consumerId: consumer.consumerId,
           consumed: consumer.consumed,
           status: ticket.status,
           note: ticket.note,
