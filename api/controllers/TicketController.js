@@ -134,6 +134,7 @@ const TicketController = () => {
         let consumer = await Consumer.findByPk(consumerId);
         consumer.status = '进场';
         consumer.transactions.进场 = transaction;
+        consumer.set('transactions', consumer.transactions);
         await consumer.save();
       } else if(status==2 && user.identity=='砂厂人员') {
         ticket  = await Ticket.create({
@@ -151,6 +152,7 @@ const TicketController = () => {
           consumer.status = '兑现';
           consumer.transactions.兑现 = transaction;
         }
+        consumer.set('transactions', consumer.transactions);
         await consumer.save();
       } else if(status==3 && user.identity=='公安人员') {
          ticket  = await Ticket.create({

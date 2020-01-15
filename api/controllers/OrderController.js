@@ -76,6 +76,7 @@ const OrderController = () => {
       order.status = '确认';
       order.transactions.确认 = req.body.transaction;
     }
+    order.set('transactions', order.transactions);
     await order.save();
     return res.status(200).json({ order });
   };

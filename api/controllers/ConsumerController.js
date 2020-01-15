@@ -84,6 +84,7 @@ const ConsumerController = () => {
         });
       }
     }
+    consumer.set('transactions', consumer.transactions);
     await consumer.save();
     return res.status(200).json({ consumer });
   };
