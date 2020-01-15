@@ -38,7 +38,7 @@ const TicketController = () => {
     try {
       const ts = await Ticket.findAll({
         group: ['truckId'],
-        attributes: ['truckId', [Sequelize.fn('max', 'createdAt'), 'created']],
+        attributes: ['truckId', [Sequelize.fn('max', Sequelize.col('createdAt')), 'created']],
         where: {
           truckId: {
             [Op.in]: trucks,

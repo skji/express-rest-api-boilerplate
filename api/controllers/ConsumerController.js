@@ -72,7 +72,7 @@ const ConsumerController = () => {
       //consumer.transactions['安排'] = req.body.transaction;
     } else if(consumer && req.body.status==2) {
       consumer.status = '确认';
-      consumer.trucks  = req.body.trucks.split(',');
+      consumer.trucks  = req.body.trucks;
       //consumer.transactions['确认'] = req.body.transaction;
       for(let truck of consumer.trucks) {
         await Ticket.create({
