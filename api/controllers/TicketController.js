@@ -44,7 +44,7 @@ const TicketController = () => {
             [Op.in]: trucks,
           },
           status: {
-            [Op.in]: ['进场', '过磅']
+            [Op.in]: ['进场', '过磅', '出场']
           }
         },
         order: [[Sequelize.literal('created'), 'DESC']],
@@ -78,7 +78,7 @@ const TicketController = () => {
         where: {
           truckId: truckId,
           status: {
-            [Op.in]: ['待进场', '进场', '过磅']
+            [Op.in]: ['待进场', '进场', '过磅', '出场']
           }
         },
         order: [['createdAt', 'DESC']]
