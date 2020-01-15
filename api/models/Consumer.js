@@ -34,7 +34,7 @@ const Consumer = sequelize.define('Consumer', {
     type: Sequelize.ARRAY(Sequelize.STRING),
   },
   transactions: {
-    type: Sequelize.ARRAY(Sequelize.STRING),
+    type: Sequelize.JSON,
   },
 }, { underscored:true, hooks, tableName });
 

@@ -37,7 +37,7 @@ const Order = sequelize.define('Order', {
     type: Sequelize.INTEGER
   },
   transactions: {
-    type: Sequelize.ARRAY(Sequelize.STRING),
+    type: Sequelize.JSON,
   },
 }, { underscored:true, hooks, tableName });
 

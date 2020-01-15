@@ -54,11 +54,9 @@ const ConsumerController = () => {
       orderId: orderId,
       amount: amount,
       status: '申请',
-      transactions: [],
+      transactions: {申请: transaction},
       consumed: 0
     });
-    consumer.transactions['申请'] = transaction;
-    await consumer.save();
 
     return res.status(200).json({ consumer });
   };
@@ -70,11 +68,11 @@ const ConsumerController = () => {
       consumer.status = '安排';
       consumer.location = req.body.location;
       consumer.consumeAt = req.body.consumeAt;
-      consumer.transactions['安排'] = req.body.transaction;
+      consumer.transactions.安排 = req.body.transaction;
     } else if(consumer && req.body.status==2) {
       consumer.status = '确认';
       consumer.trucks  = req.body.trucks;
-      consumer.transactions['确认'] = req.body.transaction;
+      consumer.transactions.确认 = req.body.transaction;
       for(let truck of consumer.trucks) {
         await Ticket.create({
           truckId: truck,
