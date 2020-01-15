@@ -5,8 +5,8 @@ const QuotaController = () => {
   const getAll = async (req, res) => {
     try {
       let quotas = await Quota.findAll();
-      // for(let i=0; i<quotas.length; i++) {
-      // }
+      for(let i=0; i<quotas.length; i++) {
+      }
 
       return res.status(200).json({ quotas });
     } catch (err) {

@@ -59,7 +59,7 @@ const TicketController = () => {
           }
         });
         let name = await User.findByPk(t.truckId, {attributes:['name']});
-        ticket.name = name.name;
+        ticket['dataValues']['name'] = name.name;
         tickets.push(ticket);
       }
 
