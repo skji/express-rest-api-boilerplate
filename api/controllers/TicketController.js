@@ -11,7 +11,8 @@ const TicketController = () => {
       const tickets = await Ticket.findAll({
         where: {
           consumerId: consumerId
-        }
+        },
+        order: [['createdAt', 'DESC']]
       });
 
       return res.status(200).json({ tickets });

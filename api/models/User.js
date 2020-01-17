@@ -12,7 +12,7 @@ const User = sequelize.define('User', {
     primaryKey: true,
   },
   identity: {
-    type: Sequelize.ENUM('管理员', '砂厂人员', '公安人员', '购砂企业', '运砂车辆', '司机'),
+    type: Sequelize.ENUM('管理员', '砂厂人员', '公安人员', '购砂企业', '运砂车辆', '司机', '砂厂'),
   },
   location: {
     type: Sequelize.STRING,
