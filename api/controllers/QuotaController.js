@@ -1,3 +1,4 @@
+const User = require('../models/User');
 const Quota = require('../models/Quota');
 const Order = require('../models/Order');
 const Sequelize = require('sequelize');
@@ -49,12 +50,35 @@ const QuotaController = () => {
           raw: true
         });
 
-        quotas[i]['dataValues']['left'] = {
-          '第一季度': quotas[i].amount/4 - total1.total,
-          '第二季度': quotas[i].amount/4 - total2.total,
-          '第三季度': quotas[i].amount/4 - total3.total,
-          '第四季度': quotas[i].amount/4 - total4.total,
-        };
+        if((new Date(Date.now())).getMonth() < 3) {
+          quotas[i]['dataValues']['left'] = {
+            '第一季度': quotas[i].amount/4 - total1.total,
+            '第二季度': quotas[i].amount/4 - total2.total,
+            '第三季度': quotas[i].amount/4 - total3.total,
+            '第四季度': quotas[i].amount/4 - total4.total,
+          };
+        } else if((new Date(Date.now())).getMonth() < 6) {
+          quotas[i]['dataValues']['left'] = {
+            '第一季度': 0,
+            '第二季度': (quotas[i].amount-total1.total)/3 - total2.total,
+            '第三季度': (quotas[i].amount-total1.total)/3 - total3.total,
+            '第四季度': (quotas[i].amount-total1.total)/3 - total4.total,
+          };
+        } else if((new Date(Date.now())).getMonth() < 9) {
+          quotas[i]['dataValues']['left'] = {
+            '第一季度': 0,
+            '第二季度': 0,
+            '第三季度': (quotas[i].amount-total1.total-total2.total)/2 - total3.total,
+            '第四季度': (quotas[i].amount-total1.total-total2.total)/2 - total4.total,
+          };
+        } else {
+           quotas[i]['dataValues']['left'] = {
+            '第一季度': 0,
+            '第二季度': 0,
+            '第三季度': 0,
+            '第四季度': quotas[i].amount-total1.total-total2.total-total3.total - total4.total,
+          };
+        }
       }
 
       return res.status(200).json({ quotas });
@@ -65,8 +89,11 @@ const QuotaController = () => {
   };
 
   const create = async (req, res) => {
-    const { city, createdAt, amount, deadlineAt, documentId, documentHash, transaction} = req.body;
-
+    const { id, city, createdAt, amount, deadlineAt, documentId, documentHash, documentUrl, transaction} = req.body;
+    const user = await User.findByPk(id);
+    if(!user || user.identity!='管理员') {
+      return res.status(403).send('Forbidden');
+    }
     const quota = await Quota.create({
       city: city,
       createdAt: createdAt,
@@ -74,6 +101,7 @@ const QuotaController = () => {
       deadlineAt: deadlineAt,
       documentId: documentId,
       documentHash: documentHash,
+      documentUrl: documentUrl,
       transaction: transaction,
     });
 

@@ -1,7 +1,9 @@
+const User = require('../models/User');
 const Order = require('../models/Order');
 const Quota = require('../models/Quota');
 const Consumer = require('../models/Consumer');
 const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 const OrderController = () => {
   const getAll = async (req, res) => {
@@ -39,26 +41,52 @@ const OrderController = () => {
   };
 
   const create = async (req, res) => {
-    const { id, city, deadlineAt, price, amount, transaction } = req.body;
-    const quota = await Quota.findOne({
+    let { id, city, deadlineAt, price, amount, transaction } = req.body;
+    const quotas = await Quota.findAll({
       where: {
         city: city,
+        createdAt: {
+          [Op.lte]: deadlineAt
+        },
+        deadlineAt: {
+          [Op.gte]: deadlineAt
+        }
       },
-      order: [['amount', 'DESC']],
+      order: [['amount', 'ASC']],
     });
 
-    let order = await Order.create({
-      city: city,
-      deadlineAt: deadlineAt,
-      price: price,
-      amount: amount,
-      userId: id,
-      status: '申请',
-      quotaId: quota.id,
-      transactions: {申请:transaction}
-    });
+    let orders = [];
+    for(let quota of quotas) {
+      let order;
+      if(quota.amount >= amount) {
+        order = await Order.create({
+          city: city,
+          deadlineAt: deadlineAt,
+          price: price,
+          amount: amount,
+          userId: id,
+          status: '申请',
+          quotaId: quota.id,
+          transactions: {申请:transaction}
+        });
+        break;
+      } else {
+        order = await Order.create({
+          city: city,
+          deadlineAt: deadlineAt,
+          price: price,
+          amount: quota.amount,
+          userId: id,
+          status: '申请',
+          quotaId: quota.id,
+          transactions: {申请:transaction}
+        });
+        amount -= quota.amount;
+      }
+      orders.push(order);
+    }
 
-    return res.status(200).json({ order });
+    return res.status(200).json({ orders });
   };
 
   const update = async (req, res) => {
@@ -71,6 +99,7 @@ const OrderController = () => {
     } else if(order && req.body.status==2) {
       order.status = '付款';
       order.receiptHash = req.body.receiptHash;
+      order.receiptUrl = req.body.receiptUrl;
       order.transactions.付款 = req.body.transaction;
     } else if(order && req.body.status==3) {
       order.status = '确认';

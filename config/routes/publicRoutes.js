@@ -11,6 +11,7 @@ const publicRoutes = {
   'POST /consumer': 'ConsumerController.create',
   'PATCH /consumer/:consumerId': 'ConsumerController.update',
   'GET /tickets': 'TicketController.getTrucks',
+  'GET /tickets/:consumerId': 'TicketController.getAll',
   'GET /ticket/:truckId': 'TicketController.getByTruckId',
   'POST /ticket': 'TicketController.create',
   'GET /users': 'UserController.getAll',

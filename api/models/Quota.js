@@ -33,6 +33,9 @@ const Quota = sequelize.define('Quota', {
   transaction: {
     type: Sequelize.STRING,
   },
+  documentUrl: {
+    type: Sequelize.STRING,
+  },
 }, { underscored:true, hooks, tableName });
 
 module.exports = Quota;

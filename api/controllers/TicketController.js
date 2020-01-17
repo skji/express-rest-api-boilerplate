@@ -6,8 +6,13 @@ const Op = Sequelize.Op;
 
 const TicketController = () => {
   const getAll = async (req, res) => {
+    const { consumerId } = req.params;
     try {
-      const tickets = await Ticket.findAll();
+      const tickets = await Ticket.findAll({
+        where: {
+          consumerId: consumerId
+        }
+      });
 
       return res.status(200).json({ tickets });
     } catch (err) {

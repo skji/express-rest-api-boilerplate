@@ -33,6 +33,9 @@ const Order = sequelize.define('Order', {
   receiptHash: {
     type: Sequelize.STRING
   },
+  receiptUrl: {
+    type: Sequelize.STRING
+  },
   amount: {
     type: Sequelize.INTEGER
   },
