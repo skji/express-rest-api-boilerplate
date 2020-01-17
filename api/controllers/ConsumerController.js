@@ -74,9 +74,29 @@ const ConsumerController = () => {
       consumer.trucks  = req.body.trucks;
       consumer.transactions.确认 = req.body.transaction;
       for(let truck of consumer.trucks) {
+        const consumers = await Consumer.findAll({
+          where: {
+            status: {
+              [Op.ne]: '兑现'
+            },
+            trucks: {
+              [Op.contains]: [truck],
+            }
+          },
+        });
+        if(consumers) {
+          return res.status(409).send('已有兑现单');
+        }
+
+        //判断时间戳
+        let createdAt = await Ticket.max('createdAt')({
+          where: {
+            consumerId: consumerId,
+          }
+        });
         await Ticket.create({
           truckId: truck,
-          createdAt: consumer.consumeAt,
+          createdAt: !createdAt?consumer.consumeAt:createdAt,
           status: '待进场',
           userId: req.body.id,
           consumerId: consumerId,

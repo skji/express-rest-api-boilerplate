@@ -95,7 +95,7 @@ const TicketController = () => {
             [Op.between]: [today, tomorrow],
           },
         },
-        order: [['createdAt', 'DESC']]
+        order: [['createdAt', 'DESC'], ['id', 'DESC']]
       });
       const truck = await User.findByPk(truckId);
       if(ticket) {
@@ -157,6 +157,12 @@ const TicketController = () => {
         if(consumer.consumed>=consumer.amount) {
           consumer.status = '兑现';
           consumer.transactions.兑现 = transaction;
+          await Ticket.destroy({
+            where: {
+              consumerId: consumerId,
+              status: '待进场',
+            }
+          });
         }
         consumer.set('transactions', consumer.transactions);
         await consumer.save();
