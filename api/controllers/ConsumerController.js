@@ -84,12 +84,12 @@ const ConsumerController = () => {
             }
           },
         });
-        if(consumers) {
+        if(consumers.length>0) {
           return res.status(409).send('已有兑现单');
         }
 
         //判断时间戳
-        let createdAt = await Ticket.max('createdAt')({
+        let createdAt = await Ticket.max('createdAt', {
           where: {
             consumerId: consumerId,
           }
