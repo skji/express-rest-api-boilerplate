@@ -73,6 +73,7 @@ const ConsumerController = () => {
       consumer.status = '确认';
       consumer.trucks  = req.body.trucks;
       consumer.transactions.确认 = req.body.transaction;
+      let conflicts = [];
       for(let truck of consumer.trucks) {
         const consumers = await Consumer.findAll({
           where: {
@@ -85,7 +86,8 @@ const ConsumerController = () => {
           },
         });
         if(consumers.length>0) {
-          return res.status(409).send('已有兑现单');
+          conflicts.push(truck);
+          continue;
         }
 
         //判断时间戳
@@ -102,6 +104,10 @@ const ConsumerController = () => {
           consumerId: consumerId,
           transaction: req.body.transaction,
         });
+      }
+
+      if(conflicts.length>0) {
+        return res.status(409).send(conflicts);
       }
     }
     consumer.set('transactions', consumer.transactions);
