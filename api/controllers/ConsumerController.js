@@ -96,9 +96,12 @@ const ConsumerController = () => {
             truckId: truck,
           }
         });
+        if(!createdAt || consumer.consumerAt>createdAt) {
+          createdAt = consumer.consumeAt;
+        }
         await Ticket.create({
           truckId: truck,
-          createdAt: !createdAt?consumer.consumeAt:createdAt,
+          createdAt: createdAt,
           status: '待进场',
           userId: req.body.id,
           consumerId: consumerId,
