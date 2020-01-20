@@ -93,7 +93,7 @@ const ConsumerController = () => {
         //判断时间戳
         let createdAt = await Ticket.max('createdAt', {
           where: {
-            consumerId: consumerId,
+            truckId: truck,
           }
         });
         await Ticket.create({
