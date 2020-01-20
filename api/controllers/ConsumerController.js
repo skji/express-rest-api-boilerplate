@@ -96,13 +96,9 @@ const ConsumerController = () => {
             truckId: truck,
           }
         });
-        console.log(consumer.consumerAt);
-        console.log(createdAt);
-        console.log(consumer.consumerAt>createdAt);
-        if(!createdAt || consumer.consumerAt>createdAt) {
+        if(!createdAt || consumer.consumeAt>createdAt) {
           createdAt = consumer.consumeAt;
         }
-        console.log(createdAt);
         await Ticket.create({
           truckId: truck,
           createdAt: createdAt,
