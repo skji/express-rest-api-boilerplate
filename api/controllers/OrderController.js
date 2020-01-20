@@ -32,6 +32,14 @@ const OrderController = () => {
     const { orderId } = req.params;
     try {
       const order = await Order.findByPk(orderId);
+      const total = await Consumer.findOne({
+        where: {
+          orderId: orderId,
+        },
+        attributes:[[Sequelize.fn('sum', Sequelize.col('amount')), 'total']],
+        raw: true
+      });
+      order['dataValues']['left'] = order.amount - total.total;
 
       return res.status(200).json({ order });
     } catch (err) {
