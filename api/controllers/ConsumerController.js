@@ -96,8 +96,6 @@ const ConsumerController = () => {
             truckId: truck,
           }
         });
-        console.log(consumer.consumeAt);
-        console.log(createdAt);
         if(!createdAt || consumer.consumeAt>createdAt) {
           createdAt = consumer.consumeAt;
         }
